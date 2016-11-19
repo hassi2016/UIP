@@ -15,10 +15,10 @@ except ImportError:
 
 class scheduler():
 
-    def __init__(self, offline):
+    def __init__(self, offline, count):
         directory = os.path.join(CURR_DIR, PICS_FOLDER)
         if not offline:
-            fetch = Thread(target=self.initFetch)
+            fetch = Thread(target=self.initFetch, args=(count,))
             # all child threads need to be daemons to die upon main thread exit
             fetch.setDaemon(True)
             fetch.start()
@@ -38,9 +38,9 @@ class scheduler():
         else:
             print("No downloaded images. Try again in online mode.")
 
-    def initFetch(self):
+    def initFetch(self, count):
         try:
-            get_images(WEBSITE)
+            get_images(WEBSITE, count)
         except ValueError as e:
             print("File could not be retrieved.", e)
 

@@ -32,10 +32,13 @@ def dlProgress(count, blockSize, totalSize):
     sys.stdout.flush()
 
 
-def get_images(url):
+def get_images(url, count):
     '''
     scrape images from /r/wallpapers
     '''
+    # this specifies the number of images to be parsed
+    no_of_images = NUMBER_OF_IMAGES_TO_PARSE if not count else int(count)
+
     soup = make_soup(url)
     # this makes a list of bs4 element tags
     thumbnails = soup.find_all("a", class_="thumbnail", href=True)
@@ -51,7 +54,7 @@ def get_images(url):
     for link in thumbnails:
         if link['href'].endswith(('jpg', 'png', 'jpeg', 'bmp')):
             image_links.append(link['href'])
-        if(len(image_links) == NUMBER_OF_IMAGES_TO_PARSE):
+        if(len(image_links) == no_of_images):
             break
 
     for image in image_links:

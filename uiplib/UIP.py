@@ -14,9 +14,17 @@ def main():
                              " and downloads new ones. "
                              "When combined with --offline,"
                              " deletes the wallpapers and exits.")
+    parser.add_argument("--count",
+                        help="Specify the no. of images to be "
+                             "downloaded. This should not be "
+                             "combined with --offline flag.")
     args = parser.parse_args()
     try:
         if args.offline:
+            if args.count:
+                print("\nWRONG USAGE OF FLAGS --count AND --offline")
+                parser.print_help()
+                sys.exit(0)
             print("You have choosen to run UIP in offline mode.")
         if args.flush:
             print("Deleting all downloaded wallpapers...")
@@ -28,6 +36,6 @@ def main():
         if not args.offline:
             print("UIP will now connect to internet and download images"
                   " from reddit.")
-        scheduler(args.offline)
+        scheduler(args.offline, args.count)
     except KeyboardInterrupt:
         sys.exit(0)
